@@ -3,17 +3,32 @@ package db
 import (
 	"context"
 	"fmt"
-  
+	"github.com/joho/godotenv"
+    "os"
+	"log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
   )
   
+  var (
+    DBUser string
+    DBPass string
+  ) 
 
-  const uri = "mongodb+srv://anilmaurya0004:rwao9ID8bZjnDBPh@cluster0.obgtu5m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
- 
   func ConnectionDb() {
-	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
+
+	err := godotenv.Load("../../.env")
+    if err != nil {
+        log.Fatalf("Error loading .env file: %v", err)
+    }
+
+	DBUser = os.Getenv("DB_USER")
+    DBPass = os.Getenv("DB_PASS")
+
+	uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.obgtu5m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+	DBUser, DBPass)
+	
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
   

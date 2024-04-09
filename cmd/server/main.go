@@ -6,18 +6,13 @@ import (
 	"log"
 
 	"task-management-backend/github.com/anilmaurya61/internal/db"
-
-	"github.com/gorilla/mux"
+	"task-management-backend/github.com/anilmaurya61/internal/routes"
 )
 
 func main(){
 
 	db.ConnectionDb()
-
-    r := mux.NewRouter()
-
-    r.HandleFunc("/", handlerFunc).Methods("GET")
-
+	r := routes.SetupRoutes() 
     fmt.Println("Server started at http://localhost:8081")
     log.Fatal(http.ListenAndServe(":8081", r))
 }
